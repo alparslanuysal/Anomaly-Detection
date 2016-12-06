@@ -1,0 +1,17 @@
+var critTemp=40
+var warningTemp=35
+
+stream
+    |from()
+        .database('DB name')
+        .measurement('Measurement Name')
+ 
+    |alert()
+	.id('1:temperature')
+	.message('{{ .ID }}:{{ index .Fields "temp" }}')
+        .crit(lambda: "temp" > critTemp)
+	.warn(lambda: "temp" > warningTemp)
+        .stateChangesOnly()
+	.details('')
+        .log('/home/alparslan/alert_temp.log')
+	.post('http://localhost:8000/alerts/')
